@@ -5,7 +5,7 @@ import sys
 import os
 import random
 
-# Day 1
+# Day 1 :0
 class Game:
     def __init__(self):
         pygame.init()  # Start pygame
