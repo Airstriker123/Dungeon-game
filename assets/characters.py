@@ -25,7 +25,7 @@ class Character:
 
         character_image = pygame.image.load(os.path.join("assets", "images", "main_character.png"))
 
-        self.image = pygame.transform.scale(character_image, (100, 100))
+        self.image = pygame.transform.scale(character_image, (350, 350))
         self.rect = self.image.get_rect()
         self.rect.center = (400, 300)
         self.direction = "right"
