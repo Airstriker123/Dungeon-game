@@ -8,9 +8,10 @@ import random
 # Day 1 :0 21
 #completed character!
 class Game:
-    def __init__(self):
+    def __init__(self
+                 ):
         pygame.init()  # Start pygame
-        self.screen = pygame.display.set_mode((800, 600))
+        self.screen = pygame.display.set_mode((800, 600),pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.running = True
 
@@ -18,31 +19,40 @@ class Game:
         pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png")))
 
         # Create your character once
-        self.main_character = Character("Hero", 100, 10, 6, 8, 12, 50)
+        self.main_character = Character("Hero", 100, 10, 10, 8, 12, 50)
 
-    def run(self):
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+    def run(self)\
+            :
+            while self.running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
 
-            # Get key presses and move the character
-            keys = pygame.key.get_pressed()
-            self.main_character.move(keys)
+                # Get key presses and move the character
+                keys = pygame.key.get_pressed()
+                self.main_character.move(keys)
 
-            # Fill screen
-            self.screen.fill((0, 0, 0))
+                # Update animation
+                self.main_character.update_animation()
 
-            # Draw character
-            self.main_character.draw(self.screen)
+                # Fill screen
+                self.screen.fill((0, 0, 0))
 
-            # Update display
-            pygame.display.flip()
-            self.clock.tick(60)  # Max FPS
+                # Draw character
+                self.main_character.draw(self.screen)
 
-        pygame.quit()
+                # Update display
+                pygame.display.flip()
+                self.clock.tick(60)  # Max FPS
+
+
 
 
 # run game
-game = Game()
-game.run()
+game = Game(
+    
+)
+game.run(
+    
+)
+
