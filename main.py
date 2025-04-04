@@ -16,7 +16,7 @@ class Game:
         pygame.display.set_caption("Dungeon Game")  # Window title
         pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png")))
 
-        # Create your character once
+        # Create character
         self.main_character = Character("Hero", 100, 10, 5, 8, 12, 50)
 
     def run(self):
