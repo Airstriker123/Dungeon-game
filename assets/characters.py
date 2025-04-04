@@ -23,7 +23,7 @@ class Character:
         self.attack = attack
         self.mana = mana
 
-        character_image = pygame.image.load(os.path.join("assets", "images", "main_character.jpg"))
+        character_image = pygame.image.load(os.path.join("assets", "images", "main_character.png"))
 
         self.image = pygame.transform.scale(character_image, (100, 100))
         self.rect = self.image.get_rect()
