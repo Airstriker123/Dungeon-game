@@ -10,7 +10,7 @@ import random
 class Game:
     def __init__(self
                  ):
-        pygame.init()  # Start pygame
+        pygame.init()  # Start ze game
         self.screen = pygame.display.set_mode((800, 600),pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -18,7 +18,7 @@ class Game:
         pygame.display.set_caption("Dungeon Game")  # game name
         pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png")))
 
-        # Create your character once
+        # Character info from object
         self.main_character = Character("Hero", 100, 10, 10, 8, 12, 50)
 
     def run(self)\
@@ -28,11 +28,11 @@ class Game:
                     if event.type == pygame.QUIT:
                         self.running = False
 
-                # Get key presses and move the character
+                # keystrokes
                 keys = pygame.key.get_pressed()
                 self.main_character.move(keys)
 
-                # Update animation
+                # animation handle
                 self.main_character.update_animation()
 
                 # Fill screen
