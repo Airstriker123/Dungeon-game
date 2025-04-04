@@ -5,7 +5,7 @@ import sys
 import os
 import random
 
-# Day 1 :0
+# Day 1 :0 21
 class Game:
     def __init__(self):
         pygame.init()  # Start pygame
@@ -13,7 +13,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        pygame.display.set_caption("Dungeon Game")  # Window title
+        pygame.display.set_caption("Dungeon Game")  # game name
         pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png")))
 
         # Create your character once
@@ -42,6 +42,6 @@ class Game:
         pygame.quit()
 
 
-# Start the game
+# run game
 game = Game()
 game.run()
