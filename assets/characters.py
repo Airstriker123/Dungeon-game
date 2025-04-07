@@ -2,7 +2,15 @@ import pygame
 import os
 
 class Character:
-    def __init__(self, name, health, defence, speed, strength, attack, mana):
+    def __init__(self,
+                 name,
+                 health,
+                 defence,
+                 speed,
+                 strength,
+                 attack,
+                 mana
+                 ):
         self.name = name
         self.health = health
         self.defence = defence
