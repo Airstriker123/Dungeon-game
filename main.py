@@ -7,7 +7,7 @@ import os
 import random
 
 # Day 3
-#completed character!
+
 class Game:
     def __init__(self):
         pygame.init()  # Start pygame
