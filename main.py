@@ -1,5 +1,6 @@
 from assets.characters import Character
 from assets.level import Level
+#from assets.HealthBar import Healthbar
 
 import pygame
 import sys
@@ -54,19 +55,23 @@ class Game:
 
 
 
-        (pygame
+        (
+            pygame
 
-        .quit(
+        .quit
+                (
 
         )
 
     )
 
 (
-       Game(
+       Game
+           (
 
 )
-     .run(
+     .run
+           (
 
     )
 )
