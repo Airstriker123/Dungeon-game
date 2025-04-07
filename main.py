@@ -1,6 +1,6 @@
 from assets.characters import Character
 from assets.level import Level
-#from assets.HealthBar import Healthbar
+#from assets.HealthBar import HealthBar
 
 import pygame
 import sys
