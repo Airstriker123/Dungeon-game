@@ -7,7 +7,7 @@ import os
 import random
 
 # Day 3
-
+#completed character!
 class Game:
     def __init__(self):
         pygame.init()  # Start pygame
@@ -31,6 +31,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
 
+
             # Get key presses and move the character
             keys = pygame.key.get_pressed()
             self.main_character.move(keys)
@@ -42,6 +43,9 @@ class Game:
 
             # Draw character
             self.main_character.draw(self.screen)
+
+            if keys[pygame.K_ESCAPE]:
+                self.running = False
 
             # Update display
             pygame.display.flip()
