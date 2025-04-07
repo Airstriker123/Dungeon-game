@@ -17,7 +17,7 @@ class Character:
         self.current_frames = []  # used to switch between left/right
         self.facing_right = False
 
-        # Load left sprite sheet (default)
+        # Load sprite sheet (default)
         sprite_sheet = pygame.image.load(os.path.join("assets", "images", "main_character.png")).convert_alpha()
         self.frame_width = sprite_sheet.get_width() // 3
         self.frame_height = sprite_sheet.get_height() // 3
@@ -26,7 +26,8 @@ class Character:
             for col in range(3):
                 frame = sprite_sheet.subsurface(pygame.Rect(
                     col * self.frame_width, row * self.frame_height, self.frame_width, self.frame_height
-                ))
+                )
+                )
                 scaled = pygame.transform.scale(frame, (130, 130))
                 self.frames_idle.append(scaled)
 
@@ -36,21 +37,22 @@ class Character:
             for col in range(3):
                 frame = sprite_sheet_right.subsurface(pygame.Rect(
                     col * self.frame_width, row * self.frame_height, self.frame_width, self.frame_height
-                ))
+                )
+                )
                 scaled = pygame.transform.scale(frame, (130, 130))
                 self.frames_right.append(scaled)
-
+           #load left sprite
         sprite_sheet_left = pygame.image.load(
         os.path.join("assets", "images", "main_character_left.png")).convert_alpha()
         for row in range(3):
             for col in range(3):
                 frame = sprite_sheet_left.subsurface(pygame.Rect(
                     col * self.frame_width, row * self.frame_height, self.frame_width, self.frame_height
-                ))
+                )
+                )
                 scaled = pygame.transform.scale(frame, (130, 130))
                 self.frames_left.append(scaled)
-        # Optionally, if you have a separate left sheet, you might want to combine or choose one.
-        # For now, we'll assume frames_left already contains the proper left-facing frames.
+
 
 
         self.current_frames = self.frames_idle
@@ -70,6 +72,7 @@ class Character:
     def draw(self, surface) -> None:
         surface.blit(self.current_frames[self.current_frame], self.rect)
 
+    #player controller
     def move(self, keys) -> None:
         moving = False
 
@@ -95,7 +98,7 @@ class Character:
             self.rect.y += self.speed
             moving = True
 
-        # If not moving, switch to idle animation
+        # idle
         if not moving:
             if self.current_frames != self.frames_idle:
                 self.current_frames = self.frames_idle
