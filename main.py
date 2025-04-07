@@ -17,7 +17,10 @@ class Game:
         self.level = Level()
 
         pygame.display.set_caption("Dungeon Game")  # game name
-        pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png")))
+        pygame.display.set_icon(pygame.image.load(os.path.join("assets", "images", "icon.png"
+                                                               )
+                                                  )
+                                )
 
         # Create your character once
         self.main_character = Character("Hero", 100, 10, 10, 8, 12, 50)
