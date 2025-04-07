@@ -83,8 +83,8 @@ class Character:
     #player controller
     def move(self, keys) -> None:
         moving = False
-
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        #if instead of elif better movement
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]: 
             self.rect.x -= self.speed
             if self.current_frames != self.frames_left:
                 self.current_frames = self.frames_left
