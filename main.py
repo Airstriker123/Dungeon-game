@@ -23,9 +23,9 @@ class Game:
                                                   )
                                 )
 
-        # Create your character once
+        # player character
         self.main_character = Character("Hero", 100, 10, 10, 8, 12, 50)
-    #game animations
+    #game instructions
     def run(self):
         while self.running:
             for event in pygame.event.get():
