@@ -44,7 +44,7 @@ class Game:
 
             # Draw character
             self.main_character.draw(self.screen)
-
+            # exit game 
             if keys[pygame.K_ESCAPE]:
                 self.running = False
 
