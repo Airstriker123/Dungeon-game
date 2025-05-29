@@ -358,53 +358,15 @@ class Enemy1(Fighter):
 
            input('\nPress Enter to continue to the next round...')
 
-
-
-
-# Game Setup
-#entity dummy for healthbar
-player = Fighter("Hero", 100, 60, 20)
-player.Character_Class()
-#combine to form healthbar
-player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
-
-
-#entity dummy for healthbar
-enemy_base = Fighter("Monkey", 80, 30, 10)
-enemy_base.enemy_Class()
-
-
-enemy = Enemy1(f"Monkey", 15, 120, 40, 10, None, entity=enemy_base)
-enemy.class_name = enemy_base.class_name
-enemy.has_used_wish = enemy_base.has_used_wish
-enemy.weapon = enemy_base.weapon
-enemy.shield = enemy_base.shield
-enemy.health = enemy_base.health
-enemy._max_health = enemy_base.health_max
-
-
-#combine to form healthbar
-enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
-
-
-#start battle once class setup
-Enemy1.game_lore() #play game lore...
-Enemy1.start_battle(player,
-                    enemy)
-'''Ask if player wants to play again'''
-while True:
-    choice = input('Play again? (y/n): ')
-    if choice == 'y':
-        try:
-         os.system('cls')
-        except:
-            os.system('clear')
+first_run = False
+def game_setup():
+    #turn this code into a function so it can be called again using the loop instead of copy and pasting the whole block
+        global first_run #declare as global and set as true when lore is played
+        # Game Setup
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
-        # combine to form healthbar
         player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
 
-        # entity dummy for healthbar
         enemy_base = Fighter("Monkey", 80, 30, 10)
         enemy_base.enemy_Class()
 
@@ -416,10 +378,29 @@ while True:
         enemy.health = enemy_base.health
         enemy._max_health = enemy_base.health_max
 
-        # combine to form healthbar
         enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
-        Enemy1.start_battle(player,
-                            enemy)
+
+        if not first_run:
+            Enemy1.game_lore()
+            first_run = True
+        Enemy1.start_battle(player, enemy)
+
+
+
+game_setup()
+
+
+'''Ask if player wants to play again'''
+while True:
+    choice = input('Play again? (y/n): ')
+    if choice == 'y':
+        try:
+         os.system('cls')
+         game_setup()
+        except:
+            os.system('clear')
+            game_setup()
+
     if choice == 'n':
         break
     else:
