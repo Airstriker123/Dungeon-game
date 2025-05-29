@@ -276,12 +276,12 @@ class Enemy1(Fighter):
        return attack_power + self.magic
 
 
-   @staticmethod
+   @staticmethod #not in instance (self/cls)
    def clear_screen():
        '''Clear terminal screen each loop'''
        os.system('cls' if os.name == 'nt' else 'clear')
 
- 
+
    @staticmethod #static method to act as a stand alone function while still being in the class
    def start_battle(player, enemy):
        '''battle logic between player and enemy'''
