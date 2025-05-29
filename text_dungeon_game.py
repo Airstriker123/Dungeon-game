@@ -391,7 +391,7 @@ enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
 Enemy1.game_lore() #play game lore...
 Enemy1.start_battle(player,
                     enemy)
-
+'''Ask if player wants to play again'''
 while True:
     choice = input('Play again? (y/n): ')
     if choice == 'y':
