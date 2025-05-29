@@ -221,6 +221,7 @@ Your choice: ''')
 
 class Enemy1(Fighter):
    '''Health bar symbols/colours'''
+   #static variables
    symbol_remaining = "█"
    symbol_lost = "_"
    barrier = "|"
@@ -280,11 +281,7 @@ class Enemy1(Fighter):
        '''Clear terminal screen each loop'''
        os.system('cls' if os.name == 'nt' else 'clear')
 
-
-
-
-
-
+ 
    @staticmethod #static method to act as a stand alone function while still being in the class
    def start_battle(player, enemy):
        '''battle logic between player and enemy'''
