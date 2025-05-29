@@ -3,11 +3,7 @@ import \
    time, \
    os
 
-
 os.system('Title Dungeon rpg game') #set terminal title to dungeon rpg game
-
-
-
 
 class Fighter:
    def __init__(self,
@@ -281,6 +277,29 @@ class Enemy1(Fighter):
        '''Clear terminal screen each loop'''
        os.system('cls' if os.name == 'nt' else 'clear')
 
+   @staticmethod
+   def game_lore():
+       '''Lore of the game ig'''
+       lore_lines = [
+           "In a land where ancient magic and steel rule, the world stands divided between the last human kingdoms and the shadow beasts of the Forgotten Realm.",
+
+           "Each battle is not just a fight — it is part of a long prophecy where chosen heroes rise to restore balance or fall into the abyss.\n",
+
+           "The player, a descendant of the ancient guardians, carries the fate of the realms."
+           " Every enemy defeated weakens the grip of the Dark Lord, but every loss strengthens it.\n",
+
+           "Step into the arena where every clash of sword and spell echoes across the ages."
+           " Destiny awaits.\n"
+       ]
+       #print lore of game using for loops to reduce lines instead of repeating print, input and os.system each line.
+       for line in lore_lines:
+           print(line)
+           input('Press enter to continue...')
+           try: #windows clear command
+            os.system('cls')
+           except: #non windows clear command (linux I think)
+               os.system('clear')
+
 
    @staticmethod #static method to act as a stand alone function while still being in the class
    def start_battle(player, enemy):
@@ -369,8 +388,40 @@ enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
 
 
 #start battle once class setup
+Enemy1.game_lore() #play game lore...
 Enemy1.start_battle(player,
                     enemy)
 
-time.sleep(2) #time before exit
-input('\nPress Enter to continue...')
+while True:
+    choice = input('Play again? (y/n): ')
+    if choice == 'y':
+        try:
+         os.system('cls')
+        except:
+            os.system('clear')
+        player = Fighter("Hero", 100, 60, 20)
+        player.Character_Class()
+        # combine to form healthbar
+        player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
+
+        # entity dummy for healthbar
+        enemy_base = Fighter("Monkey", 80, 30, 10)
+        enemy_base.enemy_Class()
+
+        enemy = Enemy1(f"Monkey", 15, 120, 40, 10, None, entity=enemy_base)
+        enemy.class_name = enemy_base.class_name
+        enemy.has_used_wish = enemy_base.has_used_wish
+        enemy.weapon = enemy_base.weapon
+        enemy.shield = enemy_base.shield
+        enemy.health = enemy_base.health
+        enemy._max_health = enemy_base.health_max
+
+        # combine to form healthbar
+        enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
+        Enemy1.start_battle(player,
+                            enemy)
+    if choice == 'n':
+        break
+    else:
+        print('invalid choice! \n')
+        time.sleep(1)
