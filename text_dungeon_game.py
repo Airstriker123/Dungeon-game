@@ -354,11 +354,11 @@ player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="gre
 
 
 #entity dummy for healthbar
-enemy_base = Fighter("Enemy", 80, 30, 10)
+enemy_base = Fighter("Monkey", 80, 30, 10)
 enemy_base.enemy_Class()
 
 
-enemy = Enemy1(f"Enemy", 15, 120, 40, 10, None, entity=enemy_base)
+enemy = Enemy1(f"Monkey", 15, 120, 40, 10, None, entity=enemy_base)
 enemy.class_name = enemy_base.class_name
 enemy.has_used_wish = enemy_base.has_used_wish
 enemy.weapon = enemy_base.weapon
