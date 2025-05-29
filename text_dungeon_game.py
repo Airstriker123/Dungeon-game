@@ -280,7 +280,7 @@ class Enemy1(Fighter):
    @staticmethod
    def game_lore():
        '''Lore of the game ig'''
-       lore_lines = [
+       lore_dialogue = [
            "In a land where ancient magic and steel rule, the world stands divided between the last human kingdoms and the shadow beasts of the Forgotten Realm.",
 
            "Each battle is not just a fight — it is part of a long prophecy where chosen heroes rise to restore balance or fall into the abyss.\n",
@@ -292,7 +292,7 @@ class Enemy1(Fighter):
            " Destiny awaits.\n"
        ]
        #print lore of game using for loops to reduce lines instead of repeating print, input and os.system each line.
-       for line in lore_lines:
+       for line in lore_dialogue:
            print(line)
            input('Press enter to continue...')
            try: #windows clear command
