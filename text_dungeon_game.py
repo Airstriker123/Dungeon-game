@@ -1,4 +1,4 @@
-"""Import modules for game for enriched experience"""
+"""Import modules for game, to create a enriched experience"""
 import \
    random, \
    time, \
