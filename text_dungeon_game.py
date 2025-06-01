@@ -1,9 +1,26 @@
+"""Import modules for game for enriched experience"""
 import \
    random, \
    time, \
    os
+try:
+    from colorama import Fore
+except:
+    os.system('pip install colorama')
+    from colorama import Fore
 
 os.system('Title Dungeon rpg game') #set terminal title to dungeon rpg game
+red = Fore.RED
+reset = Fore.RESET
+white = Fore.WHITE
+green = Fore.GREEN
+blue = Fore.BLUE
+yellow = Fore.YELLOW
+cyan = Fore.CYAN
+lc = Fore.LIGHTCYAN_EX
+grey = Fore.LIGHTBLACK_EX
+purple = Fore.MAGENTA
+aqua = Fore.LIGHTCYAN_EX
 
 class Fighter:
    def __init__(self,
@@ -20,7 +37,6 @@ class Fighter:
        self.shield = shield
        self.is_defending = False
        self.has_used_wish = False
-       self.class_name = None
 
 
    @property #healthbar property returning health value (read only attribute)
@@ -40,96 +56,115 @@ class Fighter:
 
    def Warrior(self):
        '''warrior perks'''
-       print('Class selected: Warrior')
+       print(f'{red}Class selected: Warrior')
        self.weapon *= 1.1
        self.__health =  self.__health*1.5
        self._max_health = self.__health # set max health to fix hp bar not showing remaining bars
        self.shield *= 1.2
+       self.class_name = f"{red}Warrior{reset}"
+       print(f"""{red}Class perks:
++25% weapon
+-20% health
+-30% shield{reset}
+""")
+       input("Press enter to continue")
 
 
    def Mage(self):
        '''mage perks'''
-       print('Class selected: Mage')
+       print(f'{blue}Class selected: Mage')
        self.weapon *= 1.25
        self.__health = self.__health*0.8
        self._max_health = self.__health
+       self.class_name = f"{blue}Mage{reset}"
        self.shield *= 0.7
-       print("""Class perks:
+       print(f"""{blue}Class perks:
 +25% weapon
 -20% health
--30% shield""")
+-30% shieldP{reset}
+""")
        input("Press enter to continue")
 
 
    def Archer(self):
        '''archer perks'''
-       print('Class selected: Archer')
+       print(f'{purple}Class selected: Archer')
        self.weapon *= 1.3
        self.__health = self.__health*0.85
        self._max_health = self.__health
-       print("""Class perks:
+       self.class_name = f"{purple}Archer{reset}"
+       print(f"""{purple}Class perks:
 +20% weapon
--10% health""")
+-10% health{reset}
+""")
        input("Press enter to continue")
 
 
    def Tank(self):
        '''tank perks'''
-       print('Class selected: Tank')
+       print(f'{green}Class selected: Tank')
        self.weapon *= 0.5
        self.__health = self.__health*2.3
        self._max_health = self.__health
        self.shield *= 1.4
-       print("""Class perks:
+       self.class_name = f"{green}Tank{reset}"
+       print(f"""{green}Class perks:
 -50% weapon
 +150% health
-+40% shield
++40% shield{reset}
 """)
        input("Press enter to continue")
 
 
    def Healer(self):
        '''healer stats'''
-       print('Class selected: Healer')
+       print(f'{yellow}Class selected: Healer')
        self.weapon *= 0.9
        self.__health = self.__health*0.7
        self._max_health = self.__health
        self.shield *= 0.8
-       self.class_name = "Healer"
-       print("""Class perks:
+       self.class_name = f"{yellow}Healer{reset}"
+       print(f"""{yellow}Class perks:
 -10% weapon
 +80% health
 -20% shield
-           """)
+           {reset}""")
        input("Press enter to continue")
 
 
    def Character_Class(self):
        '''get input to select character class and assign perks'''
-       class_select = input('''
-Select your class:
-[1] Warrior (best balance for health and attack)
-[2] Mage (ranged damage using magical power less health)
-[3] Archer (ranged damage using arrows power best single hit)
-[4] Tank (most health but least damage)
-[5] Healer (ability to revive yourself once)
+       self.class_name = 'Not selected'
+       class_select = input(f'''
+{yellow}Select your class: {reset}\n
+{lc}[1] {red}Warrior (best balance for health and attack) {reset}\n
+{lc}[2] {blue}Mage (ranged damage using magical power less health){reset}\n
+{lc}[3] {purple}Archer (ranged damage using arrows power best single hit){reset}\n
+{lc}[4] {green}Tank (most health but least damage){reset}\n
+{lc}[5] {yellow}Healer (ability to revive yourself once){reset}\n
+{grey}============================================================================================{reset}
 
-
-Your choice: ''')
+Your choice:[--> ''')
        '''Condition of class selection based on input'''
        if class_select == '1':
-           self.Class = self.Warrior()
+           self.Warrior()
+
        elif class_select == '2':
-           self.Class = self.Mage()
+           self.Mage()
+
        elif class_select == '3':
-           self.Class = self.Archer()
+           self.Archer()
+
        elif class_select == '4':
-           self.Class = self.Tank()
+           self.Tank()
+
        elif class_select == '5':
-           self.Class = self.Healer()
+           self.Healer()
+
        else:
            raise ValueError('Invalid choice')
-       time.sleep(1.5)
+           self.class_name = "error"
+       time.sleep(1)
        os.system('cls')
 
 
@@ -142,9 +177,11 @@ Your choice: ''')
                   'Healer']
        self.random = random.choice(choices)
        print(f'Enemy has:')
+       #call function based on attribute
        getattr(self, self.random)()
-       time.sleep(1.5)
+       time.sleep(1.2)
        os.system('cls')
+
 
 
    def report(self): #return stats
@@ -212,9 +249,6 @@ Your choice: ''')
        else:
            print(f'{self.name} takes no damage.')
 
-
-
-
 class Enemy1(Fighter):
    '''Health bar symbols/colours'''
    #static variables
@@ -237,7 +271,8 @@ class Enemy1(Fighter):
                 entity,
                 length=20,
                 is_colored=True,
-                color=""
+                color="",
+
                 ):
        super().__init__(name, starting_health, weapon, shield) #get from Fighter class
        self.magic = magic
@@ -248,7 +283,6 @@ class Enemy1(Fighter):
        self.is_colored = is_colored
        self.color = self.colors.get(color, self.colors["default"])
 
-
    def update(self):
        self.current_value = self.entity.health
 
@@ -257,19 +291,14 @@ class Enemy1(Fighter):
        '''healthbar logic (how healthbar will display)'''
        remaining_bars = round(self.current_value / self.max_value * self.length)
        lost_bars = self.length - remaining_bars
+       class_name = self.entity.class_name if self.entity.class_name else "None"
        print(f"{self.barrier}"
              f"{self.color if self.is_colored else ''}"
              f"{remaining_bars * self.symbol_remaining}"
              f"{lost_bars * self.symbol_lost}"
              f"{self.colors['default'] if self.is_colored else ''}"
-             f"{self.barrier}")
+             f"{self.barrier} ({class_name})")
 
-
-   def random_attack(self):
-       '''Random attack logic'''
-       attack_power = random.randint(int(self.weapon * 0.8), int(self.weapon * 1.2))
-       print(f'{self.name} casts a magic attack! Power: {attack_power + self.magic}')
-       return attack_power + self.magic
 
 
    @staticmethod #not in instance (self/cls)
@@ -358,10 +387,14 @@ class Enemy1(Fighter):
 
            input('\nPress Enter to continue to the next round...')
 
-first_run = False
-def game_setup():
-    #turn this code into a function so it can be called again using the loop instead of copy and pasting the whole block
-        global first_run #declare as global and set as true when lore is played
+import os
+import time
+
+class Game:
+    first_run = False  # ✅ class-level static variable
+
+    @staticmethod
+    def game_setup():
         # Game Setup
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
@@ -370,7 +403,7 @@ def game_setup():
         enemy_base = Fighter("Monkey", 80, 30, 10)
         enemy_base.enemy_Class()
 
-        enemy = Enemy1(f"Monkey", 15, 120, 40, 10, None, entity=enemy_base)
+        enemy = Enemy1(f"Monkey", 15, 146, 39, 10, None, entity=enemy_base)
         enemy.class_name = enemy_base.class_name
         enemy.has_used_wish = enemy_base.has_used_wish
         enemy.weapon = enemy_base.weapon
@@ -380,29 +413,32 @@ def game_setup():
 
         enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
 
-        if not first_run:
+        if not Game.first_run:
             Enemy1.game_lore()
-            first_run = True
+            Game.first_run = True  # ✅ set the static variable
+
         Enemy1.start_battle(player, enemy)
 
+    @staticmethod
+    def play_again():
+        '''Ask if player wants to play again'''
+        while True:
+            choice = input('Play again? (y/n): ').strip().lower()
+            if choice == 'y':
+                try:
+                    os.system('cls')
+                except:
+                    os.system('clear')
+                Game.game_setup()
+            elif choice == 'n':
+                print("Thanks for playing!")
+                break
+            else:
+                print('Invalid choice! Please type y or n.\n')
+                time.sleep(1)
 
 
-game_setup()
 
+Game().game_setup()
+Game.play_again()
 
-'''Ask if player wants to play again'''
-while True:
-    choice = input('Play again? (y/n): ')
-    if choice == 'y':
-        try:
-         os.system('cls')
-         game_setup()
-        except:
-            os.system('clear')
-            game_setup()
-
-    if choice == 'n':
-        break
-    else:
-        print('invalid choice! \n')
-        time.sleep(1)
