@@ -1,4 +1,4 @@
-"""Import modules for game, to create a enriched experience (probably)"""
+"""Import modules for game for enriched experience"""
 import \
    random, \
    time, \
@@ -21,6 +21,7 @@ lc = Fore.LIGHTCYAN_EX
 grey = Fore.LIGHTBLACK_EX
 purple = Fore.MAGENTA
 aqua = Fore.LIGHTCYAN_EX
+lr = Fore.LIGHTRED_EX
 
 class Fighter:
    def __init__(self,
@@ -36,8 +37,11 @@ class Fighter:
        self.weapon = weapon
        self.shield = shield
        self.is_defending = False
+       #healer
        self.has_used_wish = False
-
+       #warrior
+       self.rage_active = False
+       self.rage_used = False
 
    @property #healthbar property returning health value (read only attribute)
    def health(self):
@@ -191,7 +195,8 @@ Your choice:[--> ''')
    def is_dead(self):
        '''death logic'''
        if self.__health <= 0:
-           if self.class_name == "Healer" and not self.has_used_wish: #if character enemy/player is healer
+           # if character enemy/player is healer
+           if self.class_name == f"{yellow}Healer{reset}" and not self.has_used_wish:
                print(f'\n{self.name} used WISH and was revived!')
                self.__health = self._max_health
                self.has_used_wish = True
@@ -205,6 +210,11 @@ Your choice:[--> ''')
        '''normal attack logic'''
        self.attack_power = random.randint(int(self.weapon * 0.8), int(self.weapon * 1.2))
        print(f'{self.name} uses a basic attack! Power: {self.attack_power}')
+       if self.rage_active:
+           print(f'{lc}Rage used!')
+           self.attack_power = int(self.attack_power * 1.9)
+           self.rage_active = False  # reset after use
+           self.rage_used = True
        return self.attack_power
 
 
@@ -218,6 +228,11 @@ Your choice:[--> ''')
        toc = time.time()
        time_taken = toc - tic
        diff = abs(target - time_taken)
+       if self.rage_active and not self.rage_used:
+           print(f'{lc}Rage used!')
+           attack_power = int(attack_power * 1.9)
+           self.rage_active = False  # reset after use
+           self.rage_used = True
        #damage multiplier
        if diff < 0.2:
            multiplier = 1.5
@@ -241,13 +256,34 @@ Your choice:[--> ''')
            damage = damage // 2
            print(f'{self.name} blocks! Damage halved.')
            self.is_defending = False
-
-
        if damage > 0:
            self.__health -= damage
            print(f'{self.name} takes {int(damage)} damage!')
        else:
            print(f'{self.name} takes no damage.')
+
+   '''exclusive attacks for classes'''
+   def Warrior_Rage(self):
+       '''Increases the next attack damage by 90% (instant 1 hit when paired with skilled attack)'''
+       #dialogue
+       print(f'{Fore.LIGHTRED_EX}You become enraged and your next attack will deal 90% more damage!{reset}')
+       input(f'Press enter to continue...')
+       #logic
+       self.rage_active = True
+
+
+   def Mage_beam(self):
+       '''Shoots a beam at the target which syphons 20% of their health (can only be used once)'''
+       pass
+
+   def Tank_reflect(self):
+       '''Reflect the enemeies attack and deal 90% of the damage dealt on you to them'''
+       pass
+   def Archer_snipe(self):
+       '''Archer shoots A arrow that deals damage 50% of the enemies health and also skipping their turn'''
+
+
+
 
 class Enemy1(Fighter):
    '''Health bar symbols/colours'''
@@ -330,10 +366,13 @@ class Enemy1(Fighter):
                os.system('clear')
 
 
+
+
    @staticmethod #static method to act as a stand alone function while still being in the class
    def start_battle(player, enemy):
        '''battle logic between player and enemy'''
        while True:
+           class_name = player.class_name
            Enemy1.clear_screen()
            print('== BATTLE STATUS ==')
            player.report()
@@ -342,14 +381,22 @@ class Enemy1(Fighter):
            enemy.report()
            enemy.health_bar.update()
            enemy.health_bar.draw()
-           print('====================')
-
-
-           print('\nYour turn! Choose an action:')
-           print('1. Regular Attack')
-           print('2. Skill Attack')
-           print('3. Defend')
-           choice = input('> ')
+           if class_name == f"{red}Warrior{reset}":
+               print('====================')
+               print('\nYour turn! Choose an action:')
+               print('1. Regular Attack')
+               print('2. Skill Attack')
+               print('3. Defend')
+               print('4. Enrage (90% more damage next hit)')
+               choice = input('> ')
+           else:
+               print('====================')
+               print('\nYour turn! Choose an action:')
+               print('1. Regular Attack')
+               print('2. Skill Attack')
+               print('3. Defend')
+               print('default...')
+               choice = input('> ')
            if choice == '1':
                attack = player.random_attack()
                enemy.defend(attack)
@@ -359,18 +406,14 @@ class Enemy1(Fighter):
            elif choice == '3':
                player.is_defending = True
                print(f'{player.name} prepares to block the next attack.')
+           elif choice == '4' and class_name == f"{red}Warrior{reset}" and not player.rage_used:
+               player.Warrior_Rage()
            else:
                print('Invalid choice! You lose your turn.')
-
-
            if enemy.is_dead():
                print(f'\nYou defeated the {enemy.name}! 🎉')
                break
-
-
            time.sleep(1)
-
-
            print(f'\n{enemy.name}\'s turn...')
            enemy_action = random.choice(['attack', 'magic'])
            if enemy_action == 'attack':
@@ -387,14 +430,13 @@ class Enemy1(Fighter):
 
            input('\nPress Enter to continue to the next round...')
 
-import os
-import time
-
 class Game:
-    first_run = False  # ✅ class-level static variable
+    '''Puts everything together to create the game'''
+    first_run = False
 
     @staticmethod
     def game_setup():
+        '''Player objects along side their stats and healthbar'''
         # Game Setup
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
@@ -412,11 +454,11 @@ class Game:
         enemy._max_health = enemy_base.health_max
 
         enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
-
+        #check if loop was played
         if not Game.first_run:
             Enemy1.game_lore()
-            Game.first_run = True  # ✅ set the static variable
-
+            Game.first_run = True
+        #fight
         Enemy1.start_battle(player, enemy)
 
     @staticmethod
@@ -438,7 +480,7 @@ class Game:
                 time.sleep(1)
 
 
-
+#call Game functions
 Game().game_setup()
 Game.play_again()
 
