@@ -98,8 +98,8 @@ class Fighter:
        self._max_health = self.__health
        self.class_name = f"{purple}Archer{reset}"
        print(f"""{purple}Class perks:
-+20% weapon
--10% health{reset}
++30% weapon
+-15% health{reset}
 """)
        input("Press enter to continue")
 
