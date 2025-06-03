@@ -67,9 +67,9 @@ class Fighter:
        self.shield *= 1.2
        self.class_name = f"{red}Warrior{reset}"
        print(f"""{red}Class perks:
-+25% weapon
--20% health
--30% shield{reset}
++10% weapon
++50% health
++20% shield{reset}
 """)
        input("Press enter to continue")
 
