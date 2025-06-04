@@ -3,13 +3,19 @@ import \
    random, \
    time, \
    os
-try:
+try: #if import is in pip
     from colorama import Fore
-except:
+    import fade
+except: #if import is not found in pip
+    print('installing modules...')
     os.system('pip install colorama')
+    os.system('pip install fade')
     from colorama import Fore
-
+    import fade
+    os.system('cls')
+#------------------------------------------------------------------------
 os.system('Title Dungeon rpg game') #set terminal title to dungeon rpg game
+#------colour variables for coloured string prints------
 red = Fore.RED
 reset = Fore.RESET
 white = Fore.WHITE
@@ -22,7 +28,7 @@ grey = Fore.LIGHTBLACK_EX
 purple = Fore.MAGENTA
 aqua = Fore.LIGHTCYAN_EX
 lr = Fore.LIGHTRED_EX
-
+#---------------------------------------------------------------
 class Fighter:
    def __init__(self,
                 name,
@@ -30,6 +36,8 @@ class Fighter:
                 weapon,
                 shield,
                 ):
+       """Class use: Stores fighter abilities for player and enemies.
+       Also stores the classes functions for player and enemies."""
        #health bar and fighter attributes
        self.name = name
        self.__health = starting_health
@@ -139,39 +147,38 @@ class Fighter:
    def Character_Class(self):
        '''get input to select character class and assign perks'''
        self.class_name = 'Not selected'
-       class_select = input(f'''
-{yellow}Select your class: {reset}\n
-{lc}[1] {red}Warrior (best balance for health and attack) {reset}\n
-{lc}[2] {blue}Mage (ranged damage using magical power less health){reset}\n
-{lc}[3] {purple}Archer (ranged damage using arrows power best single hit){reset}\n
-{lc}[4] {green}Tank (most health but least damage){reset}\n
-{lc}[5] {yellow}Healer (ability to revive yourself once){reset}\n
-{grey}============================================================================================{reset}
+       while True: #until input is in options [1-4]
+           class_select = input(f'''
+           {yellow}Select your class: {reset}\n
+           {lc}[1] {red}Warrior (best balance for health and attack) {reset}\n
+           {lc}[2] {blue}Mage (ranged damage using magical power less health){reset}\n
+           {lc}[3] {purple}Archer (ranged damage using arrows power best single hit){reset}\n
+           {lc}[4] {green}Tank (most health but least damage){reset}\n
+           {lc}[5] {yellow}Healer (ability to revive yourself once){reset}\n
+           {grey}============================================================================================{reset}
 
-Your choice:[--> ''')
-       '''Condition of class selection based on input'''
-       if class_select == '1':
-           self.Warrior()
-
-       elif class_select == '2':
-           self.Mage()
-
-       elif class_select == '3':
-           self.Archer()
-
-       elif class_select == '4':
-           self.Tank()
-
-       elif class_select == '5':
-           self.Healer()
-
-       else:
-           raise ValueError('Invalid choice')
-           self.class_name = "error"
-       time.sleep(1)
+           Your choice:[--> ''')
+           '''Condition of class selection based on input'''
+           if class_select == '1':
+               self.Warrior()
+               break
+           elif class_select == '2':
+               self.Mage()
+               break
+           elif class_select == '3':
+               self.Archer()
+               break
+           elif class_select == '4':
+               self.Tank()
+               break
+           elif class_select == '5':
+               self.Healer()
+               break
+           else:
+               print(f'{red}Invalid choice!{reset}')
+               time.sleep(1)
+               os.system('cls')
        os.system('cls')
-
-
    def enemy_Class(self):
        '''Randomize enemy class choice 1/5 per class'''
        choices = ['Warrior',
@@ -372,6 +379,7 @@ class Enemy1(Fighter):
    def start_battle(player, enemy):
        '''battle logic between player and enemy'''
        while True:
+           time.sleep(0.1)
            class_name = player.class_name
            Enemy1.clear_screen()
            print('== BATTLE STATUS ==')
@@ -381,7 +389,17 @@ class Enemy1(Fighter):
            enemy.report()
            enemy.health_bar.update()
            enemy.health_bar.draw()
-           if class_name == f"{red}Warrior{reset}":
+           if enemy.is_dead():
+               print(f'\n{green}You defeated the {enemy.name}! 🎉{reset}')
+               enemy.health = 0
+               enemy.health_bar.update()
+               break
+           if player.is_dead():
+               print(f'\n{red}You were defeated by the {enemy.name}!{reset} 💀')
+               player.health = 0
+               player.health_bar.update()
+               break
+           if class_name == f"{red}Warrior{reset}" and not player.rage_used:
                print('====================')
                print('\nYour turn! Choose an action:')
                print('1. Regular Attack')
@@ -395,7 +413,7 @@ class Enemy1(Fighter):
                print('1. Regular Attack')
                print('2. Skill Attack')
                print('3. Defend')
-               print('default...')
+               print('4. ability used...')
                choice = input('> ')
            if choice == '1':
                attack = player.random_attack()
@@ -410,10 +428,6 @@ class Enemy1(Fighter):
                player.Warrior_Rage()
            else:
                print('Invalid choice! You lose your turn.')
-           if enemy.is_dead():
-               print(f'\nYou defeated the {enemy.name}! 🎉')
-               break
-           time.sleep(1)
            print(f'\n{enemy.name}\'s turn...')
            enemy_action = random.choice(['attack', 'magic'])
            if enemy_action == 'attack':
@@ -421,23 +435,30 @@ class Enemy1(Fighter):
            else:
                attack = enemy.random_attack() + enemy.magic
            player.defend(attack)
-
-
-           if player.is_dead():
-               print(f'\nYou were defeated by the {enemy.name}! 💀')
-               break
-
-
            input('\nPress Enter to continue to the next round...')
 
 class Game:
     '''Puts everything together to create the game'''
+    #-----static variables-----------#
     first_run = False
 
+    banner = \
+        """
+                                ██████╗ ██████╗  ██████╗      ██████╗  █████╗ ███╗   ███╗███████╗
+                                ██╔══██╗██╔══██╗██╔════╝     ██╔════╝ ██╔══██╗████╗ ████║██╔════╝
+                                ██████╔╝██████╔╝██║  ███╗    ██║  ███╗███████║██╔████╔██║█████╗  
+                                ██╔══██╗██╔═══╝ ██║   ██║    ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  
+                                ██║  ██║██║     ╚██████╔╝    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
+                                ╚═╝  ╚═╝╚═╝      ╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+                                                                                                             
+        """
+    refined_banner = fade.purpleblue(banner)
+    #------------------------------------------------------------
     @staticmethod
     def game_setup():
         '''Player objects along side their stats and healthbar'''
         # Game Setup
+        print(Game.refined_banner)
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
         player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
@@ -462,7 +483,7 @@ class Game:
         Enemy1.start_battle(player, enemy)
 
     @staticmethod
-    def play_again():
+    def play_again(game_setup):
         '''Ask if player wants to play again'''
         while True:
             choice = input('Play again? (y/n): ').strip().lower()
@@ -483,4 +504,3 @@ class Game:
 #call Game functions
 Game().game_setup()
 Game.play_again()
-
