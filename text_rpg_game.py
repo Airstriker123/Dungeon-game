@@ -1,20 +1,22 @@
-"""Import modules for game for enriched experience"""
+#---------------------------------------------------------------[Modules imported for enriched experience]---------------------------------------------------------------
 import \
    random, \
    time, \
    os
-try: #if import is in pip
+try: #if module is found and no errors occur when importing
     from colorama import Fore
     import fade
-except: #if import is not found in pip
+except: #if module is not found install it using the os module
     print('installing modules...')
     os.system('pip install colorama')
     os.system('pip install fade')
     from colorama import Fore
     import fade
     os.system('cls')
-#------------------------------------------------------------------------
+#------------------------------------------------------------------------#---------------------------------------------------------------
+
 os.system('Title Dungeon rpg game') #set terminal title to dungeon rpg game
+
 #------colour variables for coloured string prints------
 red = Fore.RED
 reset = Fore.RESET
@@ -28,7 +30,8 @@ grey = Fore.LIGHTBLACK_EX
 purple = Fore.MAGENTA
 aqua = Fore.LIGHTCYAN_EX
 lr = Fore.LIGHTRED_EX
-#---------------------------------------------------------------
+
+#---------------------------------------------------------------#---------------------------------------------------------------
 class Fighter:
    def __init__(self,
                 name,
@@ -45,12 +48,16 @@ class Fighter:
        self.weapon = weapon
        self.shield = shield
        self.is_defending = False
-       #healer
-       self.has_used_wish = False
-       #warrior
-       self.rage_active = False
-       self.rage_used = False
 
+       #classes with special abilities:
+       self.has_used_wish = False #healer
+
+       self.rage_active = False #warrior
+       self.rage_used = False #warrior
+
+       self.beam_used = False #mage
+
+   # ---------------------------------------------------------------#---------------------------------------------------------------
    @property #healthbar property returning health value (read only attribute)
    def health(self):
        return self.__health
@@ -77,8 +84,8 @@ class Fighter:
        print(f"""{red}Class perks:
 +10% weapon
 +50% health
-+20% shield{reset}
-""")
++20% shield
+special ability: enraged 90% more damage on next attack{reset}""")
        input("Press enter to continue")
 
 
@@ -93,8 +100,8 @@ class Fighter:
        print(f"""{blue}Class perks:
 +25% weapon
 -20% health
--30% shieldP{reset}
-""")
+-30% shield
+special ability: Beam 50% of enemy health{reset}""")
        input("Press enter to continue")
 
 
@@ -108,6 +115,7 @@ class Fighter:
        print(f"""{purple}Class perks:
 +30% weapon
 -15% health{reset}
+special ability: you have no special abilities -_- (to much effort to add){reset}
 """)
        input("Press enter to continue")
 
@@ -123,8 +131,8 @@ class Fighter:
        print(f"""{green}Class perks:
 -50% weapon
 +150% health
-+40% shield{reset}
-""")
++40% shield
+{reset}""")
        input("Press enter to continue")
 
 
@@ -140,10 +148,10 @@ class Fighter:
 -10% weapon
 +80% health
 -20% shield
-           {reset}""")
+special ability: Instead of dying revive yourself and heal for 100% of your health{reset}""")
        input("Press enter to continue")
 
-
+   # ----------------------[Choice class]-----------------------------------------
    def Character_Class(self):
        '''get input to select character class and assign perks'''
        self.class_name = 'Not selected'
@@ -180,6 +188,9 @@ class Fighter:
                time.sleep(1)
                os.system('cls')
        os.system('cls')
+       # ---------------------------------------------------------------
+
+       # ------------------------Enemy random class logic---------------------------------------
    def enemy_Class(self):
        '''Randomize enemy class choice 1/5 per class'''
        choices = ['Warrior',
@@ -195,7 +206,7 @@ class Fighter:
        os.system('cls')
 
 
-
+   # --------------------[Functions to check character stats (health)]-------------------------------------------
    def report(self): #return stats
        print(f'{self.name} — Health: {int(self.__health)}')
 
@@ -213,6 +224,9 @@ class Fighter:
            return True
        return False
 
+   # ---------------------------------------------------------------
+
+   # ------------------------[Player abilities]---------------------------------------
 
    def random_attack(self):
        '''normal attack logic'''
@@ -290,7 +304,7 @@ class Fighter:
    def Archer_snipe(self):
        '''Archer shoots A arrow that deals damage 50% of the enemies health and also skipping their turn'''
 
-
+#--------------------------------------------------------------[Enemy logic + Healthbar display]---------------------------------------------------------------
 
 
 class Enemy1(Fighter):
@@ -408,13 +422,20 @@ class Enemy1(Fighter):
                print('3. Defend')
                print('4. Enrage (90% more damage next hit)')
                choice = input('> ')
+           elif class_name == f"{blue}mage{reset}" and not player.rage_used:
+               print('====================')
+               print('\nYour turn! Choose an action:')
+               print('1. Regular Attack')
+               print('2. Skill Attack')
+               print('3. Defend')
+               print('4. Shoot beam (50% of enemy health)')
+               choice = input('> ')
            else:
                print('====================')
                print('\nYour turn! Choose an action:')
                print('1. Regular Attack')
                print('2. Skill Attack')
                print('3. Defend')
-               print('4. ability used...')
                choice = input('> ')
            if choice == '1':
                attack = player.random_attack()
@@ -454,11 +475,12 @@ class Game:
                                                                                                              
         """
     refined_banner = fade.purpleblue(banner)
-    #------------------------------------------------------------
+    #------------------------------------------------------------#---------------------------------------------------------------
     @staticmethod
     def game_setup():
         '''Player objects along side their stats and healthbar'''
-        # Game Setup
+        # ---------------------------------------------------------------[Game setup]---------------------------------------------------------------
+        # Creates objects and calls functions to create game
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
         player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
@@ -484,6 +506,7 @@ class Game:
         #fight
 
         Enemy1.start_battle(player, enemy)
+        # ---------------------------------------------------------------#---------------------------------------------------------------
 
     @staticmethod
     def play_again():
@@ -503,7 +526,8 @@ class Game:
                 print('Invalid choice! Please type y or n.\n')
                 time.sleep(1)
 
-
+#---------------------------------------------------------------
 #call Game functions
 Game().game_setup()
 Game.play_again()
+#------------------------End of script---------------------------------------
