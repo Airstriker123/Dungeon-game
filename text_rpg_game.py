@@ -148,6 +148,7 @@ class Fighter:
        '''get input to select character class and assign perks'''
        self.class_name = 'Not selected'
        while True: #until input is in options [1-4]
+           print(Game.refined_banner)
            class_select = input(f'''
            {yellow}Select your class: {reset}\n
            {lc}[1] {red}Warrior (best balance for health and attack) {reset}\n
@@ -349,16 +350,15 @@ class Enemy1(Fighter):
        '''Clear terminal screen each loop'''
        os.system('cls' if os.name == 'nt' else 'clear')
 
+
    @staticmethod
    def game_lore():
        '''Lore of the game ig'''
        lore_dialogue = [
-           "In a land where ancient magic and steel rule, the world stands divided between the last human kingdoms and the shadow beasts of the Forgotten Realm.",
-
-           "Each battle is not just a fight — it is part of a long prophecy where chosen heroes rise to restore balance or fall into the abyss.\n",
-
-           "The player, a descendant of the ancient guardians, carries the fate of the realms."
-           " Every enemy defeated weakens the grip of the Dark Lord, but every loss strengthens it.\n",
+           "Leader: You have been training for many years young fighter"
+           "Leader: It is time you face a challenge"
+           "You: Yes sir!"
+           "A goblin leaps forward and challenges you to fight to the death...\n",
 
            "Step into the arena where every clash of sword and spell echoes across the ages."
            " Destiny awaits.\n"
@@ -382,6 +382,7 @@ class Enemy1(Fighter):
            time.sleep(0.1)
            class_name = player.class_name
            Enemy1.clear_screen()
+           print(Game.refined_banner)
            print('== BATTLE STATUS ==')
            player.report()
            player.health_bar.update()
@@ -458,7 +459,6 @@ class Game:
     def game_setup():
         '''Player objects along side their stats and healthbar'''
         # Game Setup
-        print(Game.refined_banner)
         player = Fighter("Hero", 100, 60, 20)
         player.Character_Class()
         player.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=player, color="green")
@@ -477,13 +477,16 @@ class Game:
         enemy.health_bar = Enemy1("HP Bar", 0, 0, 0, 0, None, entity=enemy, color="red")
         #check if loop was played
         if not Game.first_run:
+            print(Game.refined_banner)
+            print('\n')
             Enemy1.game_lore()
             Game.first_run = True
         #fight
+
         Enemy1.start_battle(player, enemy)
 
     @staticmethod
-    def play_again(game_setup):
+    def play_again():
         '''Ask if player wants to play again'''
         while True:
             choice = input('Play again? (y/n): ').strip().lower()
